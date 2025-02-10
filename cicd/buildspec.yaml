@@ -27,6 +27,7 @@ phases:
   post_build:
     commands:
       - echo Pushing the Docker image to Amazon ECR...
+      - docker tag $REPOSITORY_URI:$IMAGE_TAG $REPOSITORY_URI:$IMAGE_TAG
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - echo Writing image details to output file...
 
