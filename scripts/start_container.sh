@@ -12,4 +12,4 @@ docker stop sample-node-app || true
 docker rm sample-node-app || true
 
 # Run the container
-docker run -d -p 80:3000 --name sample-node-app 430118853571.dkr.ecr.ap-south-1.amazonaws.com/sample-node-app:latest
+docker run -d -p 3000:3000 --name sample-node-app 430118853571.dkr.ecr.ap-south-1.amazonaws.com/sample-node-app:latest
