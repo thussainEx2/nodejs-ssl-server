@@ -27,6 +27,3 @@ phases:
       - docker push $REPOSITORY_URI:latest
       - echo Writing image details to output file...
 
-artifacts:
-  files:
-    - imageDetail.txt
