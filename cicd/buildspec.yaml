@@ -14,16 +14,30 @@ phases:
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 430118853571.dkr.ecr.ap-south-1.amazonaws.com
       - echo  $REPOSITORY_URI
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=${COMMIT_HASH:=latest}
+      - ECS_CLUSTER_NAME="Node-Cluster"
+      - ECS_SERVICE_NAME="test-service"
+      - ECS_TASK_DEFINITION="test-task"
 
   build:
     commands:
       - echo Building the Docker image...
       - docker build -t my-node-app:latest .
+      - docker tag my-node-app:latest $REPOSITORY_URI:$IMAGE_TAG
 
   post_build:
     commands:
       - echo Pushing the Docker image to Amazon ECR...
-      - docker tag my-node-app:latest $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:latest
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
       - echo Writing image details to output file...
+      - echo Writing image definitions file...
+      - printf '[{"name":"ecs_service_name","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - echo ECS_CLUSTER_NAME - $ECS_CLUSTER_NAME, ECS_SERVICE_NAME - $ECS_SERVICE_NAME
+      - aws ecs update-service --cluster $ECS_CLUSTER_NAME --service $ECS_SERVICE_NAME --task-definition $ECS_TASK_DEFINITION --force-new-deployment
+      - echo ECS service $ECS_SERVICE_NAME updated
+      
+artifacts:
+  files: imagedefinitions.json
 
