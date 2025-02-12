@@ -40,7 +40,7 @@ phases:
       - echo Writing image definitions file...
       - printf '[{"name":"ecs_service_name","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
       - echo ECS_CLUSTER_NAME - $ECS_CLUSTER_NAME, ECS_SERVICE_NAME - $ECS_SERVICE_NAME
-      - aws ecs update-service --cluster $ECS_CLUSTER_NAME --service $ECS_SERVICE_NAME --task-definition $ECS_TASK_DEFINITION --force-new-deployment
+      - aws ecs update-service --cluster $ECS_CLUSTER_NAME --service $ECS_SERVICE_NAME --task-definition $ECS_TASK_DEFINITION --force-new-deployment --enable-execute-command
       - echo ECS service $ECS_SERVICE_NAME updated
       
 artifacts:
