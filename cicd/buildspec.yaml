@@ -24,7 +24,12 @@ phases:
     commands:
       - echo Building the Docker image...
       - docker build -t my-node-app:latest .
+      - echo "Listing built Docker images..."
+      - docker images  # Show all images
+      - docker tag my-node-app:latest $REPOSITORY_URI:latest
       - docker tag my-node-app:latest $REPOSITORY_URI:$IMAGE_TAG
+      - echo "Tagged images:"
+      - docker images | grep sample-node-app  # Show tagged images
 
   post_build:
     commands:
