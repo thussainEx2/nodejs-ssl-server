@@ -14,11 +14,11 @@ phases:
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 430118853571.dkr.ecr.ap-south-1.amazonaws.com
       - echo  $REPOSITORY_URI
-      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
-      - IMAGE_TAG=${COMMIT_HASH:=latest}
-      - ECS_CLUSTER_NAME="Node-Cluster"
-      - ECS_SERVICE_NAME="test-service"
-      - ECS_TASK_DEFINITION="test-task"
+      - export COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - export IMAGE_TAG=${COMMIT_HASH:=latest}
+      - export ECS_CLUSTER_NAME="Node-Cluster"
+      - export ECS_SERVICE_NAME="test-service"
+      - export ECS_TASK_DEFINITION="test-task:1"
 
   build:
     commands:
