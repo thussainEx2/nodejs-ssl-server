@@ -1,10 +1,10 @@
-FROM node:alpine
+FROM public.ecr.aws/docker/library/alpine:latest
 
 WORKDIR /nodejs-docker-aws-ecs
 
 COPY package.json .
 
-RUN npm install
+RUN npm install && npm install express
 
 COPY . .
 
