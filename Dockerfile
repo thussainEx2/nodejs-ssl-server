@@ -1,13 +1,13 @@
-FROM public.ecr.aws/docker/library/alpine:latest
+FROM public.ecr.aws/docker/library/node:18-alpine
 
 WORKDIR /nodejs-docker-aws-ecs
 
-COPY package.json .
+COPY package.json package-lock.json* ./
 
-RUN npm install && npm install express
+RUN npm install --only=production
 
 COPY . .
 
 EXPOSE 3000
 
-CMD [ "node", "app.js" ]
+CMD ["node", "app.js"]
